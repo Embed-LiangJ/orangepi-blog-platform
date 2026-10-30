@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Hexo generated output and cache
+/apps/blog/public/
+/apps/blog/db.json
+/apps/blog/.deploy_git/
+
+# Local secrets and logs
+.env
+.env.*
+!.env.example
+*.log
+
+# Generic caches and temporary files
+.cache/
+.npm/
+.pnpm-store/
+.tmp/
+.tmp-*/
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Editor and OS files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

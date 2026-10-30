@@ -1,0 +1,3 @@
+[submodule "apps/blog/themes/firefly"]
+	path = apps/blog/themes/firefly
+	url = https://github.com/Embed-LiangJ/hexo-theme-firefly.git
