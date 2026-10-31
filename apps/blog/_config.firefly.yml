@@ -1,0 +1,185 @@
+# 本地站点覆盖配置；不修改主题 Submodule。
+# Hexo 8 数组按索引合并：以下组件数组保留默认顺序，本地音乐组件启用。
+# footer.license 使用布尔 false，与主题模板的实际判断保持一致。
+nav:
+  title: Orange Pi 技术博客（暂定）
+site:
+  title: Orange Pi 技术博客（暂定）
+  subtitle: 本地开发预览
+  site_url: http://127.0.0.1:4000
+  description: 个人技术博客，本地开发占位描述，待确认。
+  lang: zh-CN
+  timezone: Asia/Shanghai
+  site_start_date: '2026-10-30'
+home_text:
+  title: Orange Pi 技术博客（暂定）
+  subtitle: 本地开发预览
+wallpaper:
+  common:
+    home_text:
+      title: Orange Pi 技术博客（暂定）
+      subtitle:
+        - 本地开发预览
+        - Hexo 与 Firefly 初始化测试
+profile:
+  name: Embed-LiangJ
+  bio: 个人技术博客，资料待完善。
+  avatar: ''
+  links:
+    - name: GitHub
+      icon: github
+      url: https://github.com/Embed-LiangJ
+    - name: 归档
+      icon: archive
+      url: /archives/
+    - name: 标签
+      icon: tag
+      url: /tags/
+social:
+  - name: GitHub
+    icon: github
+    url: https://github.com/Embed-LiangJ
+  - name: 归档
+    icon: archive
+    url: /archives/
+  - name: 标签
+    icon: tag
+    url: /tags/
+  - name: 首页
+    icon: home
+    url: /
+comments:
+  type: none
+  giscus:
+    repo: ''
+    repo_id: ''
+    category: ''
+    category_id: ''
+# 音乐保存在 /home/orangepi/音乐/，未来由 OpenResty 映射到 /music/。
+# 歌单保持空；实际歌曲的 url（以及可选 cover/lrc）只能填 /music/ 路径。
+pages:
+  friends: false
+music:
+  mode: local
+  show_in_navbar: true
+  meting:
+    api: ''
+    server: ''
+    type: ''
+    id: ''
+  local:
+    playlist: []
+widgets:
+  - type: profile
+    enable: true
+    position: left
+  - type: announcement
+    enable: true
+    position: left
+  - type: music
+    enable: true
+    position: left
+  - type: categories
+    enable: true
+    position: left
+  - type: tags
+    enable: true
+    position: left
+  - type: dynamic
+    enable: true
+    position: right
+  - type: stats
+    enable: true
+    position: right
+  - type: calendar
+    enable: true
+    position: right
+  - type: site-info
+    enable: true
+    position: right
+sidebar:
+  left_components:
+    - type: profile
+      enable: true
+      position: top
+      show_on_post: true
+    - type: announcement
+      enable: true
+      position: top
+      show_on_post: true
+    - type: music
+      enable: true
+      position: sticky
+      show_on_post: true
+    - type: categories
+      enable: true
+      position: sticky
+      show_on_post: true
+      collapse_threshold: 5
+    - type: tags
+      enable: true
+      position: sticky
+      show_on_post: true
+      collapse_threshold: 10
+  mobile_bottom_components:
+    - type: profile
+      enable: true
+      position: top
+      show_on_post: true
+    - type: music
+      enable: true
+      position: top
+      show_on_post: true
+    - type: dynamic
+      enable: true
+      position: top
+      show_on_post: true
+    - type: stats
+      enable: true
+      position: top
+      show_on_post: true
+    - type: tags
+      enable: true
+      position: top
+      show_on_post: true
+      collapse_threshold: 10
+    - type: site-info
+      enable: true
+      position: top
+      show_on_post: true
+analytics:
+  busuanzi: false
+  google_analytics_id: ''
+  microsoft_clarity_id: ''
+  umami:
+    website_id: ''
+    script_url: ''
+  bai_du_tong_ji_id: ''
+  la51:
+    id: ''
+    autoTrack: false
+    screenRecord: false
+post_list_layout:
+  date_format: 'YYYY-MM-DD HH:mm:ss [UTC+08:00]'
+post:
+  meta:
+    date:
+      format: 'YYYY-MM-DD HH:mm:ss [UTC+08:00]'
+  copyright:
+    enable: false
+# 站点信息组件对空许可名会回退到 CC 协议，因此用非协议占位文本。
+license:
+  name: 待选择
+  url: ''
+footer:
+  visitor_counter: false
+  license: false
+  beian:
+    enable: false
+    icp: ''
+    gongan: ''
+    gongan_icon: ''
+    gongan_url: ''
+search:
+  enable: true
+  path: /local-search.xml
