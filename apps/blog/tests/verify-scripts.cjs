@@ -32,7 +32,7 @@ new Function('hexo', 'require', fs.readFileSync(path.join(root, 'scripts/site-re
     filter: { register(type, fn) { policyFilters.push({ type, fn }); } } }
 }, require);
 const validateMusic = policyFilters.find(f => f.type === 'before_generate').fn;
-for (const url of ['https://example.invalid/audio.mp3', '/home/orangepi/音乐/a.mp3', '/music/../a.mp3', '/music/"unsafe.mp3']) {
+for (const url of ['https://example.invalid/audio.mp3', '/srv/private-audio/test-fixture.mp3', '/music/../a.mp3', '/music/"unsafe.mp3']) {
   assert.throws(() => validateMusic.call({ theme: { config: { music: { mode: 'local', local: {
     playlist: [{ name: 'unit fixture', artist: 'test', url }]
   } } } } }), /must be an encoded/);

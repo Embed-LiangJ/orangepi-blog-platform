@@ -30,7 +30,8 @@ node tests/verify-beijing.cjs
 
 ## 本地音乐
 
-- 唯一音乐存储目录：`/home/orangepi/音乐/`，在 Git 仓库之外。
+- 唯一音乐存储目录沿用机器上已有的目录，在 Git 仓库之外；本文用 `BLOG_MUSIC_DIR` 表示，实际值由本机运维记录维护，不在公开仓库重复披露。
+- `BLOG_MUSIC_DIR` 仅为文档占位符，不会被 Hexo 或 Nginx 自动展开；本次没有迁移目录或改变运行配置。
 - 浏览器 URL 前缀：`/music/`，不是 Linux 文件系统路径。
 - 配置入口：`_config.firefly.yml` 的 `music.local.playlist`，目前为空，不扫描目录、不虚构歌曲。
 - 将来按真实文件填写 APlayer 条目：`name`、`artist`、`url`，可选 `cover`、`lrc`。资源路径只允许 `/music/` 下的站内路径；建议对文件名做 URL 编码。
@@ -41,11 +42,11 @@ node tests/verify-beijing.cjs
 - APlayer JS/CSS 暂时来自 jsDelivr；这只是播放器程序，不是外部音频源。
 - 目前目录为空，未验证真实歌曲播放或音频 Range 请求。
 
-未来 OpenResty 映射示意（本阶段没有应用）：
+未来 OpenResty 映射示意（本阶段没有应用；`/absolute/path/to/local-music/` 是通用占位路径，部署前须在本机替换为 `BLOG_MUSIC_DIR` 对应的真实绝对路径）：
 
 ```nginx
 location /music/ {
-    alias /home/orangepi/音乐/;
+    alias /absolute/path/to/local-music/;
     autoindex off;
 }
 ```

@@ -12,6 +12,28 @@ node_modules/
 !.env.example
 *.log
 
+# Private keys, credential files and local secret directories (any depth)
+.ssh/
+id_rsa
+id_dsa
+id_ecdsa
+id_ed25519
+id_ecdsa_sk
+id_ed25519_sk
+*.[pP][eE][mM]
+*.[kK][eE][yY]
+*.[pP]12
+*.[pP][fF][xX]
+*.[jJ][kK][sS]
+*.[kK][eE][yY][sS][tT][oO][rR][eE]
+credentials
+credentials.*
+credentials-*
+.credentials
+.credentials.*
+secrets/
+.secrets/
+
 # Generic caches and temporary files
 .cache/
 .npm/

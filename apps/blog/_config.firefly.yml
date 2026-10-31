@@ -55,7 +55,7 @@ comments:
     repo_id: ''
     category: ''
     category_id: ''
-# 音乐保存在 /home/orangepi/音乐/，未来由 OpenResty 映射到 /music/。
+# 音乐沿用仓库外的本地目录（文档占位名 BLOG_MUSIC_DIR），未来映射到 /music/。
 # 歌单保持空；实际歌曲的 url（以及可选 cover/lrc）只能填 /music/ 路径。
 pages:
   friends: false
