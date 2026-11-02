@@ -1,6 +1,12 @@
 # 本地站点覆盖配置；不修改主题 Submodule。
 # Hexo 8 数组按索引合并：以下组件数组保留默认顺序，本地音乐组件启用。
 # footer.license 使用布尔 false，与主题模板的实际判断保持一致。
+# Default hue for Firefly's derived accents; exact site colors live in the site CSS.
+theme_color:
+  hue: 290
+# Use Firefly's existing KaTeX 0.16.9 loader and PJAX re-rendering.
+math:
+  engine: katex
 nav:
   title: Orange Pi 技术博客（暂定）
 site:

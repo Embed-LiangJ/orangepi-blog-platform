@@ -91,7 +91,7 @@ function verify(label) {
   assert(home.querySelector('script[src*="aplayer@1"]'));
 }
 try {
-  for (const name of ['scripts', 'source', 'scaffolds']) fs.cpSync(path.join(root, name), path.join(temp, name), { recursive: true });
+  for (const name of ['scripts', 'source', 'scaffolds', 'lib']) fs.cpSync(path.join(root, name), path.join(temp, name), { recursive: true });
   for (const name of ['package.json', '_config.yml', '_config.firefly.yml']) fs.copyFileSync(path.join(root, name), path.join(temp, name));
   fs.symlinkSync(path.join(root, 'node_modules'), path.join(temp, 'node_modules'), 'dir');
   fs.mkdirSync(path.join(temp, 'themes'));

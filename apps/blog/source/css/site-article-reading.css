@@ -1,0 +1,82 @@
+/* Article-only reading fixes. Keep Firefly's grid, brand tokens and editor palette. */
+.post-content-card .post-title-custom,
+.post-meta-overlay .post-meta-title {
+  overflow-wrap: anywhere;
+}
+
+.post-container .post-content {
+  overflow-wrap: anywhere;
+}
+
+/* The native code table has an intrinsic long-line width; scroll the figure,
+ * rather than clipping its pre or forcing the whole page wider. */
+.post-content figure.highlight {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.post-content figure.highlight table {
+  width: max-content;
+  min-width: 100%;
+  border: 0;
+  border-radius: 0;
+}
+
+/* Do not inherit prose table/pre outlines inside the dark editor. */
+.post-content figure.highlight pre {
+  border: 0;
+  border-radius: 0;
+}
+
+.post-content figure.highlight td {
+  border-bottom: 0;
+}
+
+.post-content > table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.post-content .katex-display {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
+}
+
+/* Native dark editor styling is shared by both modes; improve muted text. */
+.post-content figure.highlight .gutter pre,
+.post-content figure.highlight .comment {
+  color: #9aa4b2;
+}
+
+.post-content :is(h1, h2, h3, h4, h5, h6) {
+  scroll-margin-top: 8rem;
+}
+
+.post-content-card > .site-mobile-toc {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .post-content-card > .site-mobile-toc {
+    display: block;
+    position: sticky;
+    top: calc(var(--navbar-height) + 0.5rem);
+    z-index: 20;
+    margin: 1rem 0;
+  }
+
+  .post-content-card > .site-mobile-toc > summary {
+    cursor: pointer;
+    padding: 0.75rem;
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .post-content-card > .site-mobile-toc .toc-body {
+    max-height: 50vh;
+    overflow-y: auto;
+  }
+}

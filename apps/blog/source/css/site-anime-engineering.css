@@ -1,0 +1,312 @@
+/* Site-only visual layer for Firefly eddb669. Loaded after theme styles.
+ * Keep layout, image rendering, code highlighting, and feature logic native.
+ * Firefly owns --hue and persistence. Site accent tokens follow that input;
+ * neutral surfaces/text stay stable. HEX tokens are a legacy-browser fallback.
+ */
+:root {
+  --site-accent: #7565a8;
+  --site-accent-hover: #64538f;
+  --site-accent-active: #56467e;
+  --site-accent-soft: #f5f2fa;
+  --site-accent-soft-strong: #eeebf5;
+  --site-accent-border: #b9afd1;
+  --site-accent-text: #594b80;
+  --site-accent-fill: #7565a8;
+  --site-accent-on-fill: #ffffff;
+  --page-bg: #f1f4fa;
+  --card-bg: #ffffff;
+  --card-bg-transparent: rgb(255 255 255 / var(--card-transparent-opacity, 0.5));
+  --text-primary: #393746;
+  --text-secondary: #686676;
+  --text-tertiary: #686676;
+  --line-divider: #e7e4ef;
+  --meta-divider: #aaa4b8;
+  --site-accent-blue: #7d9fc5;
+  --site-navbar-bg: rgb(255 255 255 / 0.96);
+  --site-card-shadow: 0 2px 10px rgb(57 55 70 / 0.05);
+  --site-card-shadow-hover: 0 5px 16px rgb(57 55 70 / 0.09);
+}
+
+/* The native body rule otherwise shadows root card tokens when hue-follow
+ * is off. Override only that branch; do not change the setting or DOM class.
+ */
+body:not(.card-follow-theme-hue) {
+  --card-bg: #ffffff;
+  --card-bg-transparent: rgb(255 255 255 / var(--card-transparent-opacity, 0.5));
+}
+
+/* 2. Navigation, links and buttons: keep native geometry and interactions.
+ * Firefly hardcodes important navbar backgrounds. This one important rule
+ * wins in both modes; the color itself remains a normal theme token.
+ */
+html:root #navbar[data-transparent] > div {
+  background: var(--site-navbar-bg) !important;
+  border-bottom: 1px solid var(--line-divider);
+}
+
+/* Two existing IDs outrank Firefly's banner/dark state selectors. */
+#navbar #navbar-menu a:hover,
+#navbar #navbar-menu a.active,
+#navbar #navbar-menu a.active:hover {
+  background: var(--site-accent-soft);
+  color: var(--site-accent-text);
+}
+
+html:root #navbar.navbar .navbar-actions .navbar-action-btn {
+  color: var(--site-accent);
+}
+
+html:root #navbar.navbar .navbar-actions .navbar-action-btn:hover {
+  background: var(--site-accent-soft);
+  color: var(--site-accent-text);
+}
+
+html:root #navbar.navbar .navbar-actions .navbar-action-btn:active {
+  background: var(--site-accent-soft-strong);
+  color: var(--site-accent-text);
+}
+
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+/* 3. Article cards and sidebar surfaces; no grid/width/position overrides. */
+.enable-card-border .post-card-item,
+.widget {
+  box-shadow: var(--site-card-shadow);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .post-list-container .post-card-item:hover,
+  .widget:hover {
+    box-shadow: var(--site-card-shadow-hover);
+  }
+}
+
+.widget-header::before {
+  background: var(--site-accent);
+}
+
+/* Override native important badge rules with one readable pair in both modes. */
+.categories-widget .category-count {
+  color: var(--site-accent-text) !important;
+  background: var(--site-accent-soft) !important;
+}
+
+.calendar-day-selected {
+  background-color: var(--site-accent-fill) !important;
+}
+
+/* The native More link has inline colors; keep it in the same tonal family. */
+.content-nav-bar .content-nav-more {
+  background: var(--site-accent-soft) !important;
+  color: var(--site-accent-text) !important;
+}
+
+.content-nav-bar .content-nav-more:hover,
+.content-nav-bar .content-nav-more:active {
+  background: var(--site-accent-soft-strong) !important;
+}
+
+/* Native filled icons use white text, so do not use the pale dark accent. */
+.site-info-card-icon,
+.grid-item-icon,
+.pinned-badge {
+  background: var(--site-accent-fill);
+  color: var(--site-accent-on-fill);
+}
+
+.archive-container .archive-item-cat {
+  background: var(--site-accent-soft);
+  color: var(--site-accent-text);
+}
+
+.archive-container .archive-tag-link {
+  color: var(--site-accent);
+}
+
+.archive-container .archive-timeline-list::before {
+  background: repeating-linear-gradient(to bottom, var(--site-accent-border) 0,
+    var(--site-accent-border) 4px, transparent 4px, transparent 8px);
+}
+
+.post-list-container[data-layout] .post-card-item:hover {
+  border-color: var(--site-accent-border);
+}
+
+/* Inline code is on a tonal surface; block syntax colors remain native. */
+.markdown-body :not(pre) > code {
+  color: var(--site-accent-text);
+}
+
+/* 4. Typography: leave root scaling, headings, icons and math fonts native. */
+:root {
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  --font-mono: "JetBrains Mono", Consolas, "Liberation Mono", monospace;
+}
+
+.post-content.markdown-body {
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.post-card-excerpt {
+  line-height: 1.7;
+}
+
+/* The coverless arrow uses white text natively; use a tonal surface in both
+ * modes rather than putting white on a pale dark-mode primary color.
+ */
+.post-list-container[data-layout="list"] .post-card-item[data-has-cover="false"]:hover .post-card-arrow {
+  background: var(--md-sys-color-primary-container);
+}
+
+.post-list-container[data-layout="list"] .post-card-item[data-has-cover="false"]:hover .post-card-arrow a {
+  color: var(--md-sys-color-on-primary-container);
+}
+
+/* 5. Native html.dark is the sole dark-mode switch; no new browser logic. */
+:root.dark {
+  --site-accent: #c3b3e5;
+  --site-accent-hover: #d7c9f3;
+  --site-accent-active: #e7ddfa;
+  --site-accent-soft: #40394f;
+  --site-accent-soft-strong: #4b435d;
+  --site-accent-border: #8f81ac;
+  --site-accent-text: #e1d5f5;
+  --site-accent-fill: #7565a8;
+  --page-bg: #20212b;
+  --card-bg: #2a2b38;
+  --card-bg-transparent: rgb(42 43 56 / var(--card-transparent-opacity, 0.5));
+  --text-primary: #eeebf5;
+  --text-secondary: #c2bdce;
+  --text-tertiary: #b5aec4;
+  --line-divider: #464252;
+  --meta-divider: #898197;
+  --site-accent-blue: #9cb7d5;
+  --site-navbar-bg: rgb(42 43 56 / 0.96);
+  --site-card-shadow: 0 2px 10px rgb(0 0 0 / 0.12);
+  --site-card-shadow-hover: 0 5px 16px rgb(0 0 0 / 0.2);
+}
+
+/* Repeat the selector, not the mapping: :root.dark outranks native dark tokens. */
+:root, :root.dark {
+  --primary: var(--site-accent);
+  --primary-hover: var(--site-accent-hover);
+  --primary-active: var(--site-accent-active);
+  --btn-plain-bg-hover: var(--site-accent-soft);
+  --btn-plain-bg-active: var(--site-accent-soft-strong);
+  --btn-regular-bg: var(--site-accent-soft);
+  --btn-regular-bg-hover: var(--site-accent-soft-strong);
+  --btn-regular-bg-active: var(--site-accent-soft-strong);
+  --btn-card-bg-hover: var(--site-accent-soft);
+  --btn-card-bg-active: var(--site-accent-soft-strong);
+  --btn-content: var(--text-primary);
+  /* Bare links can sit on the page background: use the deeper accent. */
+  --link-color: var(--site-accent-hover);
+  --link-hover: var(--site-accent-active);
+  --link-active: var(--site-accent-active);
+  --link-underline: var(--site-accent-border);
+  --selection-bg: var(--site-accent-soft-strong);
+  --md-sys-color-primary-container: var(--site-accent-soft);
+  --md-sys-color-on-primary-container: var(--site-accent-text);
+  --md-sys-color-surface-variant: var(--site-accent-soft);
+  --md-sys-color-on-surface-variant: var(--site-accent-text);
+  --md-sys-color-surface-container-highest: var(--site-accent-soft-strong);
+}
+
+html:root.dark body:not(.card-follow-theme-hue) {
+  --card-bg: #2a2b38;
+  --card-bg-transparent: rgb(42 43 56 / var(--card-transparent-opacity, 0.5));
+}
+
+/* One dynamic accent family. Offsets retain the approved default purple at
+ * --hue: 290; no component owns its own color formula or storage mechanism.
+ */
+@supports (color: oklch(0.65 0.18 290)) {
+  :root {
+    --site-accent-hue: calc(var(--hue, 290) + 3.71187);
+    --site-accent: oklch(0.5504975 0.1031248 var(--site-accent-hue));
+    --site-accent-hover: oklch(0.48571 0.09547 var(--site-accent-hue));
+    --site-accent-active: oklch(0.43653 0.09127 var(--site-accent-hue));
+    --site-accent-soft: oklch(0.97 0.015 var(--site-accent-hue));
+    --site-accent-soft-strong: oklch(0.92 0.025 var(--site-accent-hue));
+    --site-accent-border: oklch(0.70 0.07 var(--site-accent-hue));
+    --site-accent-text: oklch(0.43 0.07 var(--site-accent-hue));
+    --site-accent-fill: var(--site-accent);
+  }
+
+  :root.dark {
+    --site-accent-hue: calc(var(--hue, 290) + 9.41808);
+    --site-accent: oklch(0.796928 0.0717677 var(--site-accent-hue));
+    --site-accent-hover: oklch(0.86070 0.05932 var(--site-accent-hue));
+    --site-accent-active: oklch(0.91426 0.04044 var(--site-accent-hue));
+    --site-accent-soft: oklch(0.30 0.035 var(--site-accent-hue));
+    --site-accent-soft-strong: oklch(0.35 0.04 var(--site-accent-hue));
+    --site-accent-border: oklch(0.65 0.07 var(--site-accent-hue));
+    --site-accent-text: oklch(0.90 0.04 var(--site-accent-hue));
+    --site-accent-fill: oklch(0.55 0.10 var(--site-accent-hue));
+  }
+}
+
+/* Archive only: full Beijing dates cannot share a fixed-width flex row with
+ * titles and metadata. Keep the native timeline; give text its own grid areas.
+ */
+.archive-container .archive-timeline-item {
+  display: grid;
+  grid-template-columns: fit-content(30%) minmax(0, 1fr);
+  grid-template-areas: "date date" "category title" "tags tags";
+  align-items: start;
+  gap: 0.375rem 0.75rem;
+}
+
+.archive-container .archive-item-date,
+.archive-container .archive-item-title,
+.archive-container .archive-item-cat,
+.archive-container .archive-item-tags {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.archive-container .archive-item-date {
+  grid-area: date;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.archive-container .archive-item-title {
+  grid-area: title;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.archive-container .archive-item-cat {
+  grid-area: category;
+  justify-self: start;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.archive-container .archive-item-tags {
+  grid-area: tags;
+  margin-left: 0;
+  flex-wrap: wrap;
+}
+
+.archive-container .archive-tag-link {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.archive-container .archive-bullet {
+  top: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .archive-container .archive-timeline-item {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "date" "title" "category" "tags";
+  }
+}

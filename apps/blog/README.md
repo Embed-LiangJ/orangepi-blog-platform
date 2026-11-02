@@ -28,6 +28,18 @@ node tests/verify-beijing.cjs
 
 测试结束只清理自己的临时目录，通过 SHA256 指纹确认正式 source/public/db/config 未变；不会重建正式网站。单元测试使用 JSDOM 与 APlayer 替身验证生命周期，不下载或播放音频，不等同于真实浏览器验收。
 
+## 本地预览与 CSS 版本
+
+当前 Hexo 8.1.2 / hexo-server 3.0.0 中，站点 Injector 在进程加载时计算独立 CSS 的内容版本号。持续运行的 Hexo Server 即使已读到新 CSS，页面链接仍可能保留旧的 `?v=`；另开进程执行 `npm run generate` 只会让磁盘 HTML 使用新版本号，不会重载现有 Server 的 Injector。
+
+修改 `source/css/site-anime-engineering.css` 后：
+
+1. 按任务授权执行 `npm run generate`，不需要运行 clean。
+2. 用 Ctrl+C 正常停止原预览，再运行 `npm run server -- --ip 127.0.0.1 --port 4000`。
+3. 核对页面唯一的自定义 CSS 链接：`?v=` 应等于源 CSS SHA-256 的前 12 位，实际响应内容应与源文件一致。
+
+2026-11-01 本地实测确认重启后版本号和 CSS 内容恢复一致；使用的是同一隔离浏览器进程，正常 HTTP 缓存开启。这里的旧链接来自 Hexo Server 的进程内状态，不能与浏览器 HTTP 缓存混为一谈；不需要清除用户 localStorage，也不增加强制刷新脚本或修改 Injector。
+
 ## 本地音乐
 
 - 唯一音乐存储目录沿用机器上已有的目录，在 Git 仓库之外；本文用 `BLOG_MUSIC_DIR` 表示，实际值由本机运维记录维护，不在公开仓库重复披露。
