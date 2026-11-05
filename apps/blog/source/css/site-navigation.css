@@ -1,0 +1,110 @@
+/* Site navigation, brief homepage entries and isolated Page cards; native tokens. */
+#navbar .navbar-brand,
+#navbar .navbar-logo-link,
+#navbar .navbar-title { min-width: 0; max-width: 100%; }
+#navbar .navbar-logo-link { display: flex; }
+#navbar .navbar-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#navbar .navbar-inner { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
+
+#navbar-menu .site-nav-group { position: relative; }
+#navbar-menu .site-nav-trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: var(--md-shape-corner-full, 999px);
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  list-style: none;
+}
+#navbar-menu .site-nav-trigger::-webkit-details-marker { display: none; }
+#navbar #navbar-menu .site-nav-trigger:hover,
+#navbar #navbar-menu .site-nav-trigger.active {
+  background: var(--site-accent-soft);
+  color: var(--site-accent-text);
+}
+#navbar-menu .site-nav-trigger:focus-visible,
+#navbar-menu .site-nav-sub-link:focus-visible {
+  outline: 2px solid var(--site-accent);
+  outline-offset: 3px;
+}
+#navbar-menu .site-nav-arrow { font-size: 1.1rem; transition: transform 0.15s ease; }
+#navbar-menu .site-nav-group[open] .site-nav-arrow { transform: rotate(180deg); }
+#navbar-menu .site-nav-submenu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  width: 11rem;
+  max-width: calc(100vw - 2rem);
+  list-style: none;
+  margin: 0;
+  padding: 0.375rem;
+  border: 1px solid var(--line-divider);
+  border-radius: var(--md-shape-corner-medium, 12px);
+  background: var(--card-bg);
+  box-shadow: var(--shadow-lg, 0 4px 20px rgb(0 0 0 / 0.12));
+}
+#navbar-menu .site-nav-sub-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+}
+#navbar-menu .site-nav-sub-link .material-symbols-outlined { font-size: 1.1rem; }
+
+/* Also cover native overflow-triggered hamburger mode above 768px. */
+#navbar.mobile-nav .navbar-inner { grid-template-columns: minmax(0, 1fr) auto; }
+#navbar.mobile-nav .navbar-brand { grid-column: 1; grid-row: 1; overflow: hidden; }
+#navbar.mobile-nav .navbar-actions { grid-column: 2; grid-row: 1; }
+#navbar.mobile-nav .navbar-menu { grid-column: 1 / -1; grid-row: 1; width: 0; }
+#navbar.mobile-nav .navbar-links.open > .navbar-link-item { width: 100%; }
+#navbar.mobile-nav .site-nav-group { width: 100%; }
+#navbar.mobile-nav .site-nav-trigger { width: 100%; justify-content: space-between; padding: 0.625rem 0.875rem; }
+#navbar.mobile-nav .site-nav-submenu {
+  position: static;
+  transform: none;
+  width: 100%;
+  max-width: 100%;
+  padding: 0.25rem 0 0.25rem 0.75rem;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+/* Firefly also enters hamburger mode for desktop overflow, not just <=768px. */
+body > .mobile-menu-backdrop.open {
+  display: block;
+  position: fixed;
+  inset: 0;
+  background: rgb(0 0 0 / 0.25);
+  z-index: 40;
+}
+@media (max-width: 768px) {
+  #navbar .navbar-inner { grid-template-columns: minmax(0, 1fr) auto; }
+  #navbar .navbar-brand { grid-column: 1; grid-row: 1; overflow: hidden; }
+  #navbar .navbar-actions { grid-column: 2; grid-row: 1; }
+  #navbar .navbar-menu { grid-column: 1 / -1; grid-row: 1; width: 0; }
+}
+/* First-page modules sit inside the existing main column, never in the sidebars. */
+.site-home-sections { display: grid; gap: 1rem; margin-bottom: 1rem; min-width: 0; }
+.site-home-card {
+  min-width: 0;
+  padding: 1.25rem;
+  border: 1px solid var(--line-divider);
+  border-radius: var(--md-shape-corner-large, 16px);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+}
+.site-home-card h2 { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin: 0; font-size: 1.125rem; }
+.site-home-card h2 > .material-symbols-outlined { color: var(--site-accent); }
+.site-home-card small { color: var(--text-secondary); font-size: 0.75rem; font-weight: 400; }
+.site-home-note { color: var(--text-secondary); margin: 0.75rem 0; }
+@media (prefers-reduced-motion: reduce) {
+  #navbar-menu .site-nav-arrow { transition: none; }
+}

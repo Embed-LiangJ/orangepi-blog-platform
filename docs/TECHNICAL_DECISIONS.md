@@ -1,5 +1,41 @@
 # 技术决策与原因
 
+## D19. Stage3.5正文隔离使用原生独立Page（2026-11-05）
+
+**验收/版本固定补记：** 用户已确认Stage3.5人工验收全部PASS，并单独授权当前分支提交/推送及注释Tag `stage-3.5-accepted`；不修改已验收实现、不部署或进入Stage4。下方实施期“待验收/未授权”保留历史含义，当前状态以PROJECT_STATUS为准。既有D17上线记录仅本地保留，不夹带本次Stage3.5提交。
+
+**决定及原因：** 用户人工验收指出hash入口仍共用首页，两个正文和文章列表均在同一DOM，不满足独立页面边界。替代下方D18锚点方案；旧导航测试通过不构成正文隔离证明，历史记录不改写。
+
+**页面合同：** `source/research-projects/index.md`和`source/about/index.md`由Hexo原生Page处理，分别固定`type: research-projects/about`、`layout: site-page`、`permalink: research-projects/index.html / about/index.html`。内容只有对应领域的“待补充”段落，不虚构经历、资料或项目。首页保留Banner、原生动态侧栏和文章预览，只留两个简短入口，取消完整科研/About正文与hash入口。
+
+**模板边界：** 原page/about模板默认无侧栏且可附加profile/stats，故注册站点独立`site-page.ejs`内存视图：从SHA锁定的原index提取三栏/侧栏/页脚外壳，替换整个main为当前page.content，绝不执行原post-list循环。站点脚本仍名`site-home-sections.js`，保留双视图幂等、未知上游拒绝；不复制主题源码进磁盘或修改Submodule。主布局仍由原layout.ejs提供Banner等公共结构。
+
+**导航与策略：** 五项一级/技术博客子菜单不变，新页面使用普通路径及服务端layout/type active，删去首页hash专用高亮/滚动/焦点逻辑，不接管PJAX/BFCache。仅保留原先隐藏菜单测宽帧。旧输出策略改为原生About Page存在才保留其入口，Friends/RSS仍隐藏。实际分类/标签详情生成器不保证page.layout，active补用官方is_category/is_tag，归档继续is_archive，不猜URL。
+
+**验收要求：** 同一DOM合同用于实际生成HTML及浏览器切换后的document；验证当前正文类型/完整段落、禁止异页正文和post-list，连CSS-hidden污染也拒绝。隔离工程的反例文章/动态仅作测试，不进开发预览。公共导航和侧栏允许共享，不将它们当作独立页完整正文。结果见 [当前交付](reviews/stage-3.5-navigation.md)；只本地预览，未经用户授权不提交/部署/进入Stage4。
+
+以下D18为首轮及hash补充历史，现行页面边界以D19为准。
+
+## D18. Stage3.5导航采用原生披露分组，保持原生汉堡/PJAX（2026-11-04）
+
+**用户补充整改：** 一级固定为首页/技术博客/科研与项目/生活动态/关于我。保留首轮details分组与原生汉堡；新增`site-home-sections.js`只在首页首个分页的原主列内存视图插入`research-projects`、`about-me`两张卡片，全文仅为待确认的结构，不编造个人经历/项目。原图不在当前可用上下文，未声称照图复刻。
+
+导航使用经url_for处理的`/#research-projects`、`/#about-me`（支持站点root前缀），跨页仍交给原PJAX，同页仍用原生hash历史。客户端只为这两个真实首页目标更新active/aria、聚焦和固定头部避让；PJAX结束后一帧校正其旧库offset/scrollPos，不改history/cache策略，真实pageshow.persisted不强制滚动。该帧每次查询当前DOM，可取消、无旧节点闭包或轮询。五项挤压时补测被原生隐藏列表的真实宽度，再同步原生mobile-nav/visible类，不替换ScrollManager，搜索/音乐等按钮仍原生处理。
+
+两份模板分别受完整SHA/唯一锚点/重复生成保护，首页模块适配@6不与导航@5争同一视图。用户真实资料、项目链接和设计图细节仍待后续补充；本轮仅本地预览，不提交、不部署。下方“三入口/缺页不显示”为首轮方案历史，现已由本次五项真实锚点方案取代。
+
+**范围：** 用户授权导航信息架构与必要交互，仅本地实现/测试/预览；不提交、不推送、不部署或进入Stage4。既有D17部署记录保留，生产站点仍为10cf3b6版本。
+
+**结构：** 当前只显示“首页｜技术博客｜生活动态”。技术博客用原生details/summary分组，子链接为全部文章/分类/标签，原`/archives/`、`/categories/`、`/tags/`不变；动态真实路由由主题generator生成`/dynamic/`，只改导航名称。科研与项目、关于我没有真实页面或可用首页锚点，因此不造链接/内容，留待另行提供真实页面。
+
+**接入：** 扩展现有`site-nav-active.js`的before_generate@5与完整模板SHA保护；不再叠加第二个修改同一视图、破坏重复生成幂等的适配器。保留官方is_archive判定，以is_post/__post和分类/标签layout派生父子active，排除dynamic字样文章slug误判；内存中去掉无页面的About块及应用式menubar角色，使用普通链接列表与原生披露语义。
+
+**交互：** 独立CSS/JS由Injector注册内容版本，所有完整页面加载以支持首页首次PJAX；不改已有注入器。固定委托处理悬停/点击/焦点/Escape，PJAX和pagehide/pageshow时收起，不保留旧菜单节点或新增全局计时器/MQL。汉堡、backdrop和body状态仍由原ScrollManager拥有；只有菜单持有open状态时才调用原生关闭方法。不改PJAX选择器、缓存或B1控制器。
+
+**布局：** 导航局部CSS保留原hue语义色和Material图标，约束品牌缩略及窄屏grid，子菜单在原生汉堡卡片内展开；同时覆盖大于768px但原生判定溢出的模式及其backdrop，不重设计全站。A1/B1、日历、阅读/数学、音乐、日期、配置、依赖和主题磁盘均不改。
+
+**验收/回退：** 执行与限制见 [导航交付](reviews/stage-3.5-navigation.md)。JSDOM、HeadlessChrome110实验开关、Windows窄窗口与真机验收不能混写，Android/BFCache真实persisted专项未据此新增PASS。若获授权撤回本轮，按10cf3b6基线恢复导航适配器与两份导航测试并重新generate本地预览；新资产可保留但不再注入，不执行破坏性Git命令或动正式站点回滚。当前仅待人工验收，不执行回退。
+
 > 2026-11-02最终阶段决定：用户认可资料清理并批准**Stage3.4按当前限定范围关闭**。F1 PASS、F2/BFCache人工PASS、F3 Windows Chrome窄窗口导航人工PASS、归档active人工PASS；Android真机待测，A1 DEFERRED但仍参与构建，F4长期观察。此决定不改原始Review/实验，不批准新功能、Git写操作、部署或Stage4实施；当前仅做 [Git提交准备](reviews/stage-3.4-final-commit-plan.md)。
 
 ## D16. A1版本合同、失败保护与回滚

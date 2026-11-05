@@ -70,7 +70,8 @@ Hexo 预览本阶段不提供 /music/ 文件映射。
 ## 路由与外部资源
 
 - 分类和标签页使用主题自带的索引布局，数据来自真实文章。
-- About 导航由本站完整 HTML 过滤器移除（主题硬编码，不受 nav.menu 控制）。Friends 同时在配置中关闭。
+- 科研与项目、关于我分别为`source/research-projects/index.md`、`source/about/index.md`原生Page，路由`/research-projects/`、`/about/`，Front Matter明确`layout: site-page`及对应type/permalink。视图只渲染当前page.content，复用原有Banner/侧栏外壳，不继承首页文章循环；首页仅保留短入口。
+- About仅在对应原生Page存在时保留导航，Friends仍在配置中关闭且隐藏。页面DOM隔离复验：`node tests/verify-page-isolation.cjs public`；导航浏览器定向复验：`node tests/verify-nav-browser.cjs <新证据目录> <已有public目录>`。不使用首页hash充当独立页面。
 - 未安装 RSS 插件，没有有效 atom.xml；移除 feed 自动发现及 RSS 入口，不伪造 XML。
 - 所有可见导航都应有实际生成路由；不要创建虚假的个人介绍或友链。
 - 保留 Font Awesome、Fancybox、APlayer、PJAX CDN。现有 Chromium 已验证空歌单首页及分类→标签→归档→首页的实际 PJAX 导航；这不等于完整浏览器视觉、非空歌单和真实音频验收。

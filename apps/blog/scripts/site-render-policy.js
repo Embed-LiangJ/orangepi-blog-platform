@@ -4,6 +4,7 @@
 // jsdom is supplied by the existing, locked hexo-renderer-marked dependency.
 const { JSDOM } = require('jsdom');
 const moment = require('moment-timezone');
+const { url_for } = require('hexo-util');
 const ZONE = 'Asia/Shanghai';
 const safeJson = value => JSON.stringify(value).replace(/[<>&\u2028\u2029]/g,
   ch => '\\u' + ch.charCodeAt(0).toString(16).padStart(4, '0'));
@@ -50,9 +51,12 @@ hexo.extend.filter.register('after_render:html', function(html) {
     dates.set('/' + post.path.replace(/^\//, ''), moment(post.date).tz(ZONE));
   });
 
-  // Theme hardcodes these routes; nav.menu does not control them.
+  // Keep About only when the native Page really exists; Friends remains unavailable.
+  const aboutExists = !!this.model('Page').findOne({ path: 'about/index.html' });
+  const unavailable = [url_for.call(this, '/friends').replace(/\/$/, '')];
+  if (!aboutExists) unavailable.push(url_for.call(this, '/about').replace(/\/$/, ''));
   document.querySelectorAll('#navbar a[href]').forEach(link => {
-    if (['/about', '/friends'].includes(link.getAttribute('href').replace(/\/$/, ''))) {
+    if (unavailable.includes(link.getAttribute('href').replace(/\/$/, ''))) {
       const item = link.closest('li');
       if (item) item.remove();
     }
