@@ -1,5 +1,25 @@
 # 项目当前状态
 
+## Stage3.5.1人工验收PASS与授权发布（2026-11-06，当前）
+
+- **MANUAL PASS：用户明确确认首页文章列表初始化问题已解决。** 本次仅发布已验收的初始化/状态同步热修复，不更改实现、不扩大Windows/Android、真实BFCache、A1或F4结论。
+- 当前分支`feat/hexo-foundation`；发布前HEAD/正式Stage3.5为`d6ac21b7a3153aaa1bc1d6f18df16525cb387f39`，主题仍`eddb66995d5f45504011303c082e7fa80f82f60f`且干净。本轮热修复提交/Tag `stage-3.5.1-accepted`待创建，不预填SHA。
+- 已获授权按6路径白名单提交并推送（两份post-layout脚本、两份定向测试、两份必要工程文档的热修复部分）；旧Stage3.4未提交部署段落、379份历史资料及缓存排除。既有34状态/10页检查为上次实测，不重复大规模浏览器验收。
+- 随后仅从本地/GitHub一致的新Tag独立导出构建，保留当前Stage3.5发布/备份及更早版本；复用现有current原子切换，正式配置不需更改。新一键回滚目标须为Stage3.5（上述d6ac21b），备份旧入口/脚本后先做非破坏检查，不实际演练回滚。构建、页面/静态资源/HTTP结果在完成后另记，不能将计划写为PASS。
+- 本次发布后正式网站功能/视觉仍等待用户人工确认；不进入Stage4。下方本地“待确认/不提交部署”为实施时点，现已被本次MANUAL PASS及发布授权取代。
+
+## Stage3.5上线后首页布局热修复（2026-11-05，本地实施与验证历史）
+
+- 实际HEAD/验收Tag `stage-3.5-accepted`：`d6ac21b7a3153aaa1bc1d6f18df16525cb387f39`；Firefly仍`eddb66995d5f45504011303c082e7fa80f82f60f`且干净。上一任务已完成Stage3.5正式部署，当前`current`仍指向`stage35-20261105T092307Z-d6ac21b/public`。下方“正式仍Stage3.4/未部署”等文字为历史时点，不覆盖实际发布状态。
+- 本次在正式站点的隔离浏览器复现：1920px桌面、亮暗两色，有`grid`偏好时首次卡片335.75px、点击首页后1037px，storage/getter仍grid而新DOM已list；无偏好时两次均1037px。原生Settings完整加载恢复偏好，PJAX替换为默认list后，PostLayoutManager.init的initialized早退漏掉新DOM同步。原生独立反例也复现；两阶段CSS URL未变，正式cards.css/原生管理器与固定主题源码一致，不归因于未经证明的缓存或导航时序。
+- 新增`scripts/site-post-layout.js`与`source/js/site-post-layout.js`：原生管理器后唯一、内容版本化加载；完整上游JS SHA及锚点保护。保留原生init/bind/Settings/CSS，仅在每次init后重新读取当前DOM和偏好同步两处data属性及按钮；无偏好时seed list，避免原生移动端自动写grid；已有grid保留，不清存储、不改宽度或!important。科研/About正文、导航、A1/B1、配置/依赖及主题磁盘不改。方案见D20。
+- 本次PASS：6组原生集成、2个原生缺陷反例、注入幂等/版本及3类拒绝保护；10个真实HTML/Page模型和2个隐藏污染反例；1920亮暗、无偏好/已存grid的34个首页定向浏览器状态（直接、首页点击、About往返、后退/前进到首页、刷新及真实设置按钮切换/保存）。列表首次/点击均1037px；保留网格两次均335.75px；未捕获异常/HTTP错误0，截图0。浏览器为本机HeadlessChrome110实验性OKLCH，不新增Windows/Android或真实BFCache结论。
+- 开发工程无clean generate退出0（27.05秒），160文件、仍仅原真实文章；4项HTTP200且内容与磁盘一致，新脚本顺序/唯一性/版本检查通过。**本地预览 http://127.0.0.1:4000/ 已更新**，原Python回环服务未重启。已有grid偏好者需在显示设置→外观主动选“列表”，本轮不会擅自抹掉网格偏好。
+- 477份正式版本/旧发布/备份及回滚保护文件、current与rollback符号链接指纹未变；379份历史资料完整保留。新增两份定向测试，全部热修复待提交；原有两份工程文档未提交部署记录保留。**不commit/push/部署或执行回滚，不进入Stage4；等待本地人工确认。** A1仍DEFERRED且启用，F4长期观察，不扩大验收结论。
+- 本地必要证据：`.cache/stage35-layout-20261105T095610Z/final-results.json`、`after-preview-final/report.json`及正式缺陷复现`before-production/report.json`。首次修复后驱动误用不存在的layout页签失败，已仅修正为appearance并完整重跑；失败保留。上述缓存/浏览器Profile仅本地临时资料，不随仓库发布。
+
+以下保留既有验收/版本固定与部署过程快照，不改写历史MANUAL PASS或原失败。
+
 ## Stage3.5人工验收PASS与Git版本固定（2026-11-05，当前）
 
 - **MANUAL PASS：用户明确确认Stage3.5人工验收全部通过。** 五个一级入口、技术博客分组、原生独立Page及内容隔离的交付已接受；不再处于等待本轮验收状态。用户未提供本次终端/浏览器明细，不虚增Android、真实BFCache、A1、F4或正式站点专项结论。
