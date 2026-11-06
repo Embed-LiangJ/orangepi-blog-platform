@@ -1,12 +1,16 @@
 # 项目当前状态
 
-## Stage3.5.1人工验收PASS与授权发布（2026-11-06，当前）
+## Stage3.5.1已发布（2026-11-06，正式待用户人工确认）
 
-- **MANUAL PASS：用户明确确认首页文章列表初始化问题已解决。** 本次仅发布已验收的初始化/状态同步热修复，不更改实现、不扩大Windows/Android、真实BFCache、A1或F4结论。
-- 当前分支`feat/hexo-foundation`；发布前HEAD/正式Stage3.5为`d6ac21b7a3153aaa1bc1d6f18df16525cb387f39`，主题仍`eddb66995d5f45504011303c082e7fa80f82f60f`且干净。本轮热修复提交/Tag `stage-3.5.1-accepted`待创建，不预填SHA。
-- 已获授权按6路径白名单提交并推送（两份post-layout脚本、两份定向测试、两份必要工程文档的热修复部分）；旧Stage3.4未提交部署段落、379份历史资料及缓存排除。既有34状态/10页检查为上次实测，不重复大规模浏览器验收。
-- 随后仅从本地/GitHub一致的新Tag独立导出构建，保留当前Stage3.5发布/备份及更早版本；复用现有current原子切换，正式配置不需更改。新一键回滚目标须为Stage3.5（上述d6ac21b），备份旧入口/脚本后先做非破坏检查，不实际演练回滚。构建、页面/静态资源/HTTP结果在完成后另记，不能将计划写为PASS。
-- 本次发布后正式网站功能/视觉仍等待用户人工确认；不进入Stage4。下方本地“待确认/不提交部署”为实施时点，现已被本次MANUAL PASS及发布授权取代。
+- **本地热修复MANUAL PASS：用户明确确认首页文章列表初始化问题已解决。** 正式网站人工确认另行等待用户，不扩大Windows/Android、真实BFCache、A1或F4结论，不进入Stage4。
+- 发布代码：`38d0649200303d3f99b153f70339c9e6fbc4ad63`；注释Tag `stage-3.5.1-accepted`，Tag对象`18b1a3de231cd72b2ea76386989403347d25114e`。本地/GitHub refs已核验一致；本节为随后部署结果补记，开发分支`feat/hexo-foundation`追加结果文档不改变发布Tag或业务代码。Firefly仍`eddb66995d5f45504011303c082e7fa80f82f60f`且干净。
+- 初始热修复提交严格6路径：两份post-layout脚本、两份定向测试、两份工程文档的相关部分。结果补记仅两份工程文档；原Stage3.4未提交部署段落继续排除，379份历史资料及缓存不提交、不删除。原有34浏览器状态为上次实测及本次用户人工验收依据，本轮未重跑浏览器。
+- 本次从Tag独立导出55份应用文件和固定主题Git对象，只读复用经package/lock及直接版本核验的依赖；未从含未提交内容的工作区复制源码，未重建开发预览。独立generate退出0（29.16秒），160静态文件逐一复制并匹配哈希；仍仅原真实文章。定向单元、10页内容/Page模型及13个完整站点HTML的脚本顺序/唯一性/版本检查PASS。
+- 正式地址`http://192.168.31.171/`；current原子指向`releases/stage351-20261106T012716Z-38d0649/public`。26项HTTP200且响应哈希匹配（7路由、新热修复及关键原生/站点JS/CSS/图片）。nginx -t前后通过、优雅重载无严重错误，容器未重启；全部既有站点配置指纹不变。
+- 回滚目标：Stage3.5 `d6ac21b7a3153aaa1bc1d6f18df16525cb387f39`，原`releases/stage35-20261105T092307Z-d6ac21b/public`完整保留。新完整静态备份、原配置、旧回滚组件/入口记录位于`$HOME/.local/share/orangepi-blog-platform/deployments/stage351-20261106T012716Z-38d0649/backup/`；原Stage3.5部署目录及更早Stage3.4发布/备份未变。
+- 一键回滚：`bash "$HOME/.local/share/orangepi-blog-platform/rollback.sh"`。新入口切换前后`--check`验证Stage3.5全部159文件、完整备份、配置和当前链接状态，**未实际执行回滚**；真正执行时原子恢复Stage3.5链接、保持相同原配置、重载并核对7个旧响应，拒绝覆盖未知配置/链接，不删新版。
+- 本次实测记录：`$HOME/.local/share/orangepi-blog-platform/deployments/stage351-20261106T012716Z-38d0649/deployment.json`；提交范围/排除差异留在本地`.cache/stage351-release-20261106T012716Z/`。附加HTML顺序扫描最初误将未变的原生`pio/README.html`静态资源当完整页面而失败，已仅收紧检查范围并核验该资产旧哈希一致，保留`content-validation-attempts.json`；构建及业务代码未因此重跑/修改。
+- **部署完成后停止，等待正式网站人工确认。** 下方本地“待确认/不提交部署”为实施期历史，不覆盖本次MANUAL PASS及已执行的授权发布。
 
 ## Stage3.5上线后首页布局热修复（2026-11-05，本地实施与验证历史）
 
